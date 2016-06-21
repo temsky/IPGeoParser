@@ -10,24 +10,6 @@ import ru.temsky.ipgeo.IP;
 @Component
 public class CheckerAddress implements Checker {
 
-	private long ipToLong(String ip) {
-		try {
-			byte[] bytes = InetAddress.getByName(ip).getAddress();
-			long oct1 = bytes[0] & 0xFF;
-			oct1 <<= 24;
-			long oct2 = bytes[1] & 0xFF;
-			oct2 <<= 16;
-			long oct3 = bytes[2] & 0xFF;
-			oct3 <<= 8;
-			long oct4 = bytes[3] & 0xFF;
-			return oct1 | oct2 | oct3 | oct4;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			return 0;
-		}
-
-	}
-
 	@Override
 	public IP checkLocal(IP ip) {
 		try {
@@ -69,8 +51,8 @@ public class CheckerAddress implements Checker {
 	private boolean subnetCheck(String strIP, String strSubnet, String cidr) {
 		if (strSubnet.isEmpty() || cidr.isEmpty())
 			return false;
-		long ip = ipToLong(strIP);
-		long subnet = ipToLong(strSubnet);
+		long ip = IPUtils.ipToLong(strIP);
+		long subnet = IPUtils.ipToLong(strSubnet);
 		long subnetMask = Long.MAX_VALUE << (32 - Integer.parseInt(cidr));
 		if ((ip & subnetMask) == subnet)
 			return true;

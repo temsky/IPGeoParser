@@ -33,7 +33,7 @@ public class PageParserJsoup implements PageParser {
 					return result;
 				}
 
-				Thread.sleep(1000 * i);
+				Thread.sleep(500 * i);
 				logger.info("\nRetry request..");
 			}
 

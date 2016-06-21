@@ -10,7 +10,7 @@ import ru.temsky.ipgeo.IP;
 @Component
 public class CheckerAddress implements Checker {
 
-	public long ipToLong(String ip) {
+	private long ipToLong(String ip) {
 		try {
 			byte[] bytes = InetAddress.getByName(ip).getAddress();
 			long oct1 = bytes[0] & 0xFF;

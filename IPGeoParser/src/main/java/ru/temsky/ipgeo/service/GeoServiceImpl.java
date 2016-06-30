@@ -15,15 +15,17 @@ public class GeoServiceImpl implements GeoService {
 	private final Whois whoisGeoiplookup;
 	private final Whois whoisPredator;
 	private final Checker checkerAddress;
+	private final Storage storage;
 
 	@Autowired
-	public GeoServiceImpl(ListCreator listCreator, Whois whoisRipe, Whois whoisIPGeoBase, Whois whoisGeoiplookup, Whois whoisPredator, Checker checkerAddress) {
+	public GeoServiceImpl(ListCreator listCreator, Whois whoisRipe, Whois whoisIPGeoBase, Whois whoisGeoiplookup, Whois whoisPredator, Checker checkerAddress, Storage storage) {
 		this.listCreator = listCreator;
 		this.whoisRipe = whoisRipe;
 		this.whoisIPGeoBase = whoisIPGeoBase;
 		this.whoisGeoiplookup = whoisGeoiplookup;
 		this.whoisPredator = whoisPredator;
 		this.checkerAddress = checkerAddress;
+		this.storage = storage;
 	}
 
 	@Override
@@ -36,6 +38,7 @@ public class GeoServiceImpl implements GeoService {
 
 			IP ip = ipList.get(i);
 			ip = checkerAddress.checkLocal(ip);
+			ip = storage.check(ip);
 			ip = whoisRipe.whois(ip);
 			ip = whoisIPGeoBase.whois(ip);
 			ip = whoisGeoiplookup.whois(ip);
@@ -47,7 +50,7 @@ public class GeoServiceImpl implements GeoService {
 					newIP = checkerAddress.copy(newIP, ip);
 				}
 			}
-
+			storage.save(ip);
 		}
 
 		return ipList;

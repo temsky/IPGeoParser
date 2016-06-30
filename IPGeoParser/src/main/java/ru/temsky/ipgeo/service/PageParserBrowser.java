@@ -16,18 +16,15 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 @Component
 public class PageParserBrowser implements PageParser {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	static WebClient webClient = new WebClient(BrowserVersion.getDefault());
-
-	static {
-		webClient.getOptions().setThrowExceptionOnScriptError(false);
-		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-		webClient.getOptions().setCssEnabled(false);
-	}
 
 	@Override
 	public String parse(String url) {
 		String result = "";
 		logger.info("\nSending GET to: " + url);
+		WebClient webClient = new WebClient(BrowserVersion.getDefault());
+		webClient.getOptions().setThrowExceptionOnScriptError(false);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+		webClient.getOptions().setCssEnabled(false);
 		webClient.setAjaxController(new NicelyResynchronizingAjaxController());
 
 		try {

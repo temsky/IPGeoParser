@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>IP Geo Parser - групповой геолокатор</title>
-	<META name="description" content="Определение местоположения IP адреса. Групповая геолокация. ">
+    <title>IP Geo Parser - определение географии IP адреса.</title>
+	<META name="description" content="Узнать IP адрес. Определение географии IP адреса. Узнать страну, город, провайдера по IP. ">
+	<meta name="keywords" content="ip, ip-адрес, гео IP, гео IP инструмент, ip geo, гео, область, город, данные, IP, хост, ISP, hostiname, провайдер, страна, адрес, IP Location" />
 	<link href="css/style.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
   
@@ -20,6 +21,10 @@
   	
     var connectCallback = function() {
       stompClient.subscribe('/user/topic/result', getData);
+      stompClient.subscribe('/user/topic/ip', getIP);
+      stompClient.subscribe('/user/topic/ipinfo', getIPinfo);
+      stompClient.send("/app/myip", {}, {});
+      stompClient.send("/app/myipinfo", {}, {});
     }; 
     
     stompClient.connect("guest", "guest", connectCallback, errorCallback);
@@ -31,10 +36,9 @@
     
     $(document).ready(function() {
       $("#sendData").click(function(e){
-        if ($(this).hasClass('disabled')) {
+    	  if ($(this).hasClass('disabled')) {
             return;
         }
-        
         var data = $("#data").val();
         if(data.length ==0) return;
         $("#result").addClass('hidden');
@@ -46,6 +50,22 @@
         
       });
     });
+    
+    function getIP (frame) {
+        var ip = JSON.parse(frame.body);
+        if (ip.length != 0 ) {
+        	 $("#ip").text(ip.address);
+	        
+        }
+    }
+    function getIPinfo (frame) {
+        var ip = JSON.parse(frame.body);
+        if (ip.length != 0 ) {
+        	 $("#country").text(ip.country);
+        	 $("#city").text(ip.city);
+        	 $("#isp").text(ip.provider);
+        }
+    }
     
     function getData(frame) {
         var listData = JSON.parse(frame.body);
@@ -115,6 +135,29 @@
     <h1><strong>IP Geo Parser</strong></h1>
     <p class="lead">определение географического положения по IP адресам<br></p>
   </div>
+  <br>
+  <br>
+ 
+  <div class="row">
+    
+  <div class="col-md-3 col-md-offset-1">
+    
+    <p><em>Ваш IP-адрес:</em></p>
+    <div class="text-info">
+    <p class="lead"><strong><span id="ip"></span></strong></p>
+    </div>
+ 
+    </div>
+    <div id="myinfo" class="col-md-8">
+      <p><em>Страна: </em><span id="country" class="text-success">..</span></p>
+      <p><em>Город: </em><span id="city" class="text-success">..</span></p>
+	  <p><em>Провайдер: </em><span id="isp" class="text-success">..</span></p>
+    </div>
+    
+</div>
+  
+  
+  <br>
   <br>
 
  <div class="input-group">

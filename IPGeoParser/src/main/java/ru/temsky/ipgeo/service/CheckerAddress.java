@@ -11,7 +11,7 @@ import ru.temsky.ipgeo.IP;
 public class CheckerAddress implements Checker {
 
 	@Override
-	public IP checkLocal(IP ip) {
+	public void checkLocal(IP ip) {
 		try {
 			if (ip.getProvider().isEmpty()) {
 				String strIP = ip.getAddress();
@@ -24,7 +24,6 @@ public class CheckerAddress implements Checker {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		return ip;
 	}
 
 	@Override

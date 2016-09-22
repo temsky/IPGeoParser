@@ -18,9 +18,9 @@ public class WhoisGeoiplookup implements Whois {
 	}
 
 	@Override
-	public IP whois(IP ip) {
+	public void whois(IP ip) {
 		if (ip.getProvider().equals("RESERVED") || !ip.getCity().isEmpty())
-			return ip;
+			return;
 
 		Pattern pattern;
 		Matcher matcher;
@@ -45,7 +45,6 @@ public class WhoisGeoiplookup implements Whois {
 			String city = matcher.group(1).trim();
 			ip.setCity(city);
 		}
-		return ip;
 	}
 
 }

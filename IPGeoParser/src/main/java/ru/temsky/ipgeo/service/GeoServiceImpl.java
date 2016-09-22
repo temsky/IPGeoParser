@@ -37,12 +37,12 @@ public class GeoServiceImpl implements GeoService {
 				return null;
 
 			IP ip = ipList.get(i);
-			ip = checkerAddress.checkLocal(ip);
-			ip = storage.check(ip);
-			ip = whoisRipe.whois(ip);
-			ip = whoisIPGeoBase.whois(ip);
-			ip = whoisGeoiplookup.whois(ip);
-			ip = whoisPredator.whois(ip);
+			checkerAddress.checkLocal(ip);
+			storage.check(ip);
+			whoisRipe.whois(ip);
+			whoisIPGeoBase.whois(ip);
+			whoisGeoiplookup.whois(ip);
+			whoisPredator.whois(ip);
 
 			for (int j = i + 1; j < ipList.size(); j++) {
 				IP newIP = ipList.get(j);
@@ -56,4 +56,24 @@ public class GeoServiceImpl implements GeoService {
 		return ipList;
 	}
 
+	@Override
+	public IP start(String data) {
+		List<IP> ipList = listCreator.getList(data);
+
+		for (int i = 0; i < ipList.size(); i++) {
+
+			IP ip = ipList.get(i);
+			checkerAddress.checkLocal(ip);
+			storage.check(ip);
+			whoisRipe.whois(ip);
+			whoisIPGeoBase.whois(ip);
+			whoisGeoiplookup.whois(ip);
+			whoisPredator.whois(ip);
+
+			storage.save(ip);
+		}
+		if (ipList.size() == 0)
+			return null;
+		return ipList.get(0);
+	}
 }

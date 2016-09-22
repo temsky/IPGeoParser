@@ -18,9 +18,9 @@ public class WhoisRipe implements Whois {
 	}
 
 	@Override
-	public IP whois(IP ip) {
+	public void whois(IP ip) {
 		if (ip.getProvider().equals("RESERVED") || !ip.getCountry().isEmpty())
-			return ip;
+			return;
 
 		Pattern pattern;
 		Matcher matcher;
@@ -72,8 +72,6 @@ public class WhoisRipe implements Whois {
 				}
 			}
 		}
-
-		return ip;
 	}
 
 }

@@ -34,4 +34,5 @@ public class Session {
 	public static List<String> getList() {
 		return listSession;
 	}
+
 }

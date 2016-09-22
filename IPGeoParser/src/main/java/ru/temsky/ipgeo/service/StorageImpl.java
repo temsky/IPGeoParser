@@ -14,7 +14,7 @@ public class StorageImpl implements Storage {
 	SubnetRepository subnetRepository;
 
 	@Override
-	public IP check(IP ip) {
+	public void check(IP ip) {
 		Subnet sub = subnetRepository.findSubnet(ip.getAddress());
 		if (sub != null) {
 			ip.setCountry(sub.getCountry());
@@ -25,7 +25,6 @@ public class StorageImpl implements Storage {
 			ip.setSubnet(subnet);
 			ip.setCidr(cidr);
 		}
-		return ip;
 	}
 
 	@Override

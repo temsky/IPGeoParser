@@ -18,9 +18,9 @@ public class WhoisIPGeoBase implements Whois {
 	}
 
 	@Override
-	public IP whois(IP ip) {
+	public void whois(IP ip) {
 		if (ip.getProvider().equals("RESERVED") || ip.getCountry().isEmpty() || !ip.getCity().isEmpty())
-			return ip;
+			return;
 
 		String source = pageParserJsoup.parse("http://www.ipgeobase.ru:7020/geo?ip=" + ip.getAddress());
 		Pattern pattern = Pattern.compile("<city>(.*?)</city>", Pattern.CASE_INSENSITIVE);
@@ -29,8 +29,6 @@ public class WhoisIPGeoBase implements Whois {
 			String city = matcher.group(1);
 			ip.setCity(city);
 		}
-
-		return ip;
 	}
 
 }

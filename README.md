@@ -32,6 +32,6 @@ spring.datasource.password=password
 ```
 
 ## Demo/Examples
-The live version of this solution can be found at: [ip-geo.ru](http://ip-geo.ru)
+The live version of this solution can be found at: ....... (test domain deleted)
 
  
